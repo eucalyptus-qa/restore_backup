@@ -101,6 +101,12 @@ system("killall -9 mysqld");
 print "\n";
 sleep(1);
 
+print "\nTEMP SOLUTION: Killing postgres\n";
+print("killall -9 postgres\n");
+system("killall -9 postgres");
+print "\n";
+sleep(1);
+
 
 restore_network_state();
 
