@@ -437,7 +437,7 @@ sub is_install_san_from_memo{
 		my $san_option = $1;
                 print "FOUND in MEMO\n";
                 print "SAN_PROVIDER=$san_option\n";
-		if( $san_option ne "NO-SAN" ){
+		if( !($san_option =~ /^NO/) ){
                 	$ENV{'QA_INSTALL_SAN'} = "YES";
                 	return 1;
 		};
