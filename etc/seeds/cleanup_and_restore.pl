@@ -431,6 +431,20 @@ sub is_install_vmbroker_from_memo{
 	return 0;
 };
 
+sub is_install_san_from_memo{
+	$ENV{'QA_INSTALL_SAN'} = "NO";
+        if( $ENV{'QA_MEMO'} =~ /^SAN_PROVIDER=(\w+)/m ){
+		my $san_option = $1;
+                print "FOUND in MEMO\n";
+                print "SAN_PROVIDER=$san_option\n";
+		if( $san_option ne "NO-SAN" ){
+                	$ENV{'QA_INSTALL_SAN'} = "YES";
+                	return 1;
+		};
+        };
+        return 0;
+};
+
 
 ############################################# PACKAGE UN-INSTALLATION SUBROUTINES #####################################
 
@@ -760,6 +774,9 @@ sub ubuntu_package_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("apt-get --force-yes -y install " . $pkgname . "-sc");
+		if( is_install_san_from_memo() ){
+			system("apt-get --force-yes -y install " . $pkgname . "-enterprise-storage-san");
+		};
 	};
 
 	if( does_It_Have($roll, "WS") ){
@@ -804,6 +821,9 @@ sub debian_package_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("apt-get --force-yes -y install " . $pkgname . "-sc");
+		if( is_install_san_from_memo() ){
+			system("apt-get --force-yes -y install " . $pkgname . "-enterprise-storage-san");
+		};
 	};
 
 	if( does_It_Have($roll, "WS") ){
@@ -853,6 +873,9 @@ sub opensuse_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("zypper -n in " . $pkgname . "-sc");
+		if( is_install_san_from_memo() ){
+                        system("zypper -n in " . $pkgname . "-enterprise-storage-san");
+                };
 	};
 
 	if( does_It_Have($roll, "WS") ){
@@ -926,6 +949,9 @@ sub centos_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("yum -y install " . $pkgname . "-sc.$this_arch --nogpgcheck");
+		if( is_install_san_from_memo() ){
+			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
+		};
 	};
 
 	if( does_It_Have($roll, "WS") ){
@@ -999,6 +1025,9 @@ sub fedora_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("yum -y install " . $pkgname . "-sc --nogpgcheck");
+		if( is_install_san_from_memo() ){
+			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
+		};
 	};
 
 	if( does_It_Have($roll, "WS") ){
@@ -1073,6 +1102,9 @@ sub rhel_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("yum -y install " . $pkgname . "-sc.$this_arch --nogpgcheck");
+		if( is_install_san_from_memo() ){
+			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
+		};
 	};
 
 	if( does_It_Have($roll, "WS") ){
