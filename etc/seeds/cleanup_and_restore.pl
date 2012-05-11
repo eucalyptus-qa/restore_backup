@@ -938,12 +938,18 @@ sub centos_package_euca_repo_install{
 	# Eucalyptus Install
 	if( does_It_Have($roll, "CLC") ){
 		system("yum -y install " . $pkgname . "-cloud.$this_arch --nogpgcheck");
+
+		###	TEMP. SOL.	091112
+		if( is_install_vmbroker_from_memo() ){
+			system("yum -y install " . $pkgname . "-broker --nogpgcheck");
+		};
 	};
 
 	if( does_It_Have($roll, "CC") ){
 		system("yum -y install " . $pkgname . "-cc.$this_arch --nogpgcheck");
 		if( is_install_vmbroker_from_memo() ){
-			system("yum -y install " . $pkgname . "-broker.$this_arch --nogpgcheck");
+#			system("yum -y install " . $pkgname . "-broker.$this_arch --nogpgcheck");
+			system("yum -y install " . $pkgname . "-broker --nogpgcheck");
 		};
 	};
 
