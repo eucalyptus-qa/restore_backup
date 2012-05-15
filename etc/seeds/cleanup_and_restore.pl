@@ -392,6 +392,9 @@ sub read_input_file{
         	}elsif( $line =~ /^BZR_REVISION\t(.+)/ ){
         	        print ( "\nBZR REVISION\t$1\n" );
 			$ENV{'QA_BZR_REV'} = $1;
+        	}elsif( $line =~ /^GIT_REPO\s+(.+)/ ){
+        	        print ( "\nGIT_REPO\t$1\n" );
+			$ENV{'QA_GIT_REPO'} = $1;
 		}elsif( $line =~ /^PXE_TYPE\t(.+)/ ){
                         print ( "\nPXE_TYPE\t$1\n" );
 			$ENV{'QA_PXETYPE'} = $1;
@@ -937,12 +940,12 @@ sub centos_package_euca_repo_install{
 
 	# Eucalyptus Install
 	if( does_It_Have($roll, "CLC") ){
-		system("yum -y install " . $pkgname . "-cloud.$this_arch --nogpgcheck");
-
-		###	TEMP. SOL.	091112
-		if( is_install_vmbroker_from_memo() ){
-			system("yum -y install " . $pkgname . "-broker --nogpgcheck");
-		};
+		###     TEMP. SOL       051512
+                if( $ENV{'QA_GIT_REPO'} ne ""  ){
+                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
+                }else{
+                        system("yum -y install " . $pkgname . "-cloud.$this_arch --nogpgcheck");
+                };
 	};
 
 	if( does_It_Have($roll, "CC") ){
@@ -1019,7 +1022,12 @@ sub fedora_package_euca_repo_install{
 
 	# Eucalyptus Install
 	if( does_It_Have($roll, "CLC") ){
-		system("yum -y install " . $pkgname . "-cloud --nogpgcheck");
+		###     TEMP. SOL       051512
+                if( $ENV{'QA_GIT_REPO'} ne ""  ){
+                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
+                }else{
+			system("yum -y install " . $pkgname . "-cloud --nogpgcheck");
+                };
 	};
 
 	if( does_It_Have($roll, "CC") ){
@@ -1096,7 +1104,13 @@ sub rhel_package_euca_repo_install{
 
 	# Eucalyptus Install
 	if( does_It_Have($roll, "CLC") ){
-		system("yum -y install " . $pkgname . "-cloud.$this_arch --nogpgcheck");
+		###     TEMP. SOL       051512
+                if( $ENV{'QA_GIT_REPO'} ne ""  ){
+                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
+                }else{
+                        system("yum -y install " . $pkgname . "-cloud.$this_arch --nogpgcheck");
+                };
+
 	};
 
 	if( does_It_Have($roll, "CC") ){
