@@ -965,10 +965,10 @@ sub centos_package_euca_repo_install{
 	# Eucalyptus Install
 	if( does_It_Have($roll, "CLC") ){
 		###     TEMP. SOL       051512
-                if( $ENV{'QA_GIT_REPO'} ne ""  ){
-                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
-                }else{
+                if( is_before_dual_repo()  ){
                         system("yum -y install " . $pkgname . "-cloud.$this_arch --nogpgcheck");
+                }else{
+                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
                 };
 	};
 
@@ -1047,10 +1047,10 @@ sub fedora_package_euca_repo_install{
 	# Eucalyptus Install
 	if( does_It_Have($roll, "CLC") ){
 		###     TEMP. SOL       051512
-                if( $ENV{'QA_GIT_REPO'} ne ""  ){
-                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
-                }else{
+		if( is_before_dual_repo()  ){
 			system("yum -y install " . $pkgname . "-cloud --nogpgcheck");
+                }else{
+                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
                 };
 	};
 
@@ -1129,10 +1129,10 @@ sub rhel_package_euca_repo_install{
 	# Eucalyptus Install
 	if( does_It_Have($roll, "CLC") ){
 		###     TEMP. SOL       051512
-                if( $ENV{'QA_GIT_REPO'} ne ""  ){
-                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
-                }else{
+		if( is_before_dual_repo()  ){
                         system("yum -y install " . $pkgname . "-cloud.$this_arch --nogpgcheck");
+                }else{
+                        system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
                 };
 
 	};
@@ -1578,5 +1578,29 @@ sub is_killall_dhcpd_when_restore_from_memo{
 	};
 	return 0;
 };
+
+sub is_euca_version_from_memo{
+        if( $ENV{'QA_MEMO'} =~ /^EUCA_VERSION=(.+)\n/m ){
+                my $extra = $1;
+                $extra =~ s/\r//g;
+                print "FOUND in MEMO\n";
+                print "EUCA_VERSION=$extra\n";
+                $ENV{'QA_MEMO_EUCA_VERSION'} = $extra;
+                return 1;
+        };
+        return 0;
+};
+
+sub is_before_dual_repo{
+	if( is_euca_version_from_memo() ){
+		if( $ENV{'QA_MEMO_EUCA_VERSION'} =~ /^2/ || $ENV{'QA_MEMO_EUCA_VERSION'} =~ /^3\.0/ ){
+			return 1;
+		};
+	};
+	return 0;
+};  
+
+
+
 
 1;
