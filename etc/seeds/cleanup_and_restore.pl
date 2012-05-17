@@ -752,6 +752,23 @@ sub uninstall_package{
 
 ############################################# PACKAGE INSTALLATION SUBROUTINES #####################################
 
+sub force_start_libvirt{
+
+	print("/etc/init.d/libvirt-bin stop\n");
+	system("/etc/init.d/libvirt-bin stop");
+	sleep(5);
+
+	print("/etc/init.d/libvirt-bin start\n");
+	system("/etc/init.d/libvirt-bin start");
+	sleep(3);
+
+	print("ps aux | grep libvirt\n");
+	system("ps aux | grep libvirt");
+
+	return 0;
+};
+
+
 sub ubuntu_package_install{
 
 	my $roll = $ENV{'QA_ROLL'};
@@ -788,6 +805,9 @@ sub ubuntu_package_install{
 
 	if( does_It_Have($roll, "NC") ){
 		system("apt-get --force-yes -y install " . $pkgname . "-nc");
+		sleep(5);
+
+		force_start_libvirt();
 	};
 
 	return 0;
