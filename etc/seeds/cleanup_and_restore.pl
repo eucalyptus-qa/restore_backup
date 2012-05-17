@@ -788,8 +788,11 @@ sub ubuntu_package_install{
 	if( does_It_Have($roll, "CC") ){
 		system("apt-get --force-yes -y install " . $pkgname . "-cc");
 		if( is_install_vmbroker_from_memo() ){
-			system("apt-get --force-yes -y install " . $pkgname . "-broker");
-		};
+			if( $ENV{'QA_GIT_REPO'} ne "" ){
+                                system("apt-get --force-yes -y install eucalyptus-enterprise-vmware-broker");
+                        }else{
+				system("apt-get --force-yes -y install " . $pkgname . "-broker");
+			};
 	};
 
 	if( does_It_Have($roll, "SC") ){
