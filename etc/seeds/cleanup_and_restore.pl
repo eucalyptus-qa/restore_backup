@@ -793,6 +793,7 @@ sub ubuntu_package_install{
                         }else{
 				system("apt-get --force-yes -y install " . $pkgname . "-broker");
 			};
+		};
 	};
 
 	if( does_It_Have($roll, "SC") ){
