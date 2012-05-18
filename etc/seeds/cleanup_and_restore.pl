@@ -787,6 +787,11 @@ sub ubuntu_package_install{
 
 	if( does_It_Have($roll, "CLC") ){
 		system("apt-get --force-yes -y install " . $pkgname . "-cloud");
+ 		if( !is_before_dual_repo() ){
+			if( is_install_san_from_memo() || is_install_vmbroker_from_memo() ){
+				system("apt-get --force-yes -y install eucalyptus-enterprise-libs");
+			};
+		};
 	};
 
 	if( does_It_Have($roll, "CC") ){
