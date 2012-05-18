@@ -426,8 +426,10 @@ sub read_input_file{
 
 sub is_install_vmbroker_from_memo{
 	if( $ENV{'QA_MEMO'} =~ /^INSTALL_VMBROKER=YES/m ){
+		print "\n";
 		print "FOUND in MEMO\n";
 		print "INSTALL_VMBROKER=YES\n";
+		print "\n";
 		$ENV{'QA_INSTALL_VMBROKER'} = "YES";
 		return 1;
 	};
@@ -438,8 +440,10 @@ sub is_install_san_from_memo{
 	$ENV{'QA_INSTALL_SAN'} = "NO";
         if( $ENV{'QA_MEMO'} =~ /^SAN_PROVIDER=(\w+)/m ){
 		my $san_option = $1;
+		print "\n";
                 print "FOUND in MEMO\n";
                 print "SAN_PROVIDER=$san_option\n";
+		print "\n";
 		if( !($san_option =~ /^NO/) ){
                 	$ENV{'QA_INSTALL_SAN'} = "YES";
                 	return 1;
@@ -1140,7 +1144,8 @@ sub rhel_package_euca_repo_install{
 	if( does_It_Have($roll, "CC") ){
 		system("yum -y install " . $pkgname . "-cc.$this_arch --nogpgcheck");
 		if( is_install_vmbroker_from_memo() ){
-			system("yum -y install " . $pkgname . "-broker.$this_arch --nogpgcheck");
+#			system("yum -y install " . $pkgname . "-broker.$this_arch --nogpgcheck");
+			system("yum -y install " . $pkgname . "-broker --nogpgcheck");
 		};
 	};
 
