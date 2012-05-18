@@ -804,6 +804,10 @@ sub ubuntu_package_install{
 		system("apt-get --force-yes -y install " . $pkgname . "-sc");
 		if( is_install_san_from_memo() ){
 			system("apt-get --force-yes -y install " . $pkgname . "-enterprise-storage-san");
+			sleep(3);
+			system("/etc/init.d/tgtd stop");
+			sleep(3);
+			system("/etc/init.d/tgtd start");
 		};
 	};
 
@@ -854,6 +858,10 @@ sub debian_package_install{
 		system("apt-get --force-yes -y install " . $pkgname . "-sc");
 		if( is_install_san_from_memo() ){
 			system("apt-get --force-yes -y install " . $pkgname . "-enterprise-storage-san");
+			sleep(3);
+                        system("/etc/init.d/tgtd stop");
+                        sleep(3);
+                        system("/etc/init.d/tgtd start");
 		};
 	};
 
@@ -906,6 +914,10 @@ sub opensuse_package_euca_repo_install{
 		system("zypper -n in " . $pkgname . "-sc");
 		if( is_install_san_from_memo() ){
                         system("zypper -n in " . $pkgname . "-enterprise-storage-san");
+			sleep(3);
+                        system("/etc/init.d/tgtd stop");
+                        sleep(3);
+                        system("/etc/init.d/tgtd start");
                 };
 	};
 
@@ -988,6 +1000,10 @@ sub centos_package_euca_repo_install{
 		system("yum -y install " . $pkgname . "-sc.$this_arch --nogpgcheck");
 		if( is_install_san_from_memo() ){
 			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
+			sleep(3);
+                        system("/etc/init.d/tgtd stop");
+                        sleep(3);
+                        system("/etc/init.d/tgtd start");
 		};
 	};
 
@@ -1069,6 +1085,10 @@ sub fedora_package_euca_repo_install{
 		system("yum -y install " . $pkgname . "-sc --nogpgcheck");
 		if( is_install_san_from_memo() ){
 			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
+			sleep(3);
+                        system("/etc/init.d/tgtd stop");
+                        sleep(3);
+                        system("/etc/init.d/tgtd start");
 		};
 	};
 
@@ -1153,6 +1173,10 @@ sub rhel_package_euca_repo_install{
 		system("yum -y install " . $pkgname . "-sc.$this_arch --nogpgcheck");
 		if( is_install_san_from_memo() ){
 			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
+			sleep(3);
+                        system("/etc/init.d/tgtd stop");
+                        sleep(3);
+                        system("/etc/init.d/tgtd start");
 		};
 	};
 
