@@ -814,9 +814,9 @@ sub ubuntu_package_install{
 		};
 		if( $distro_ver eq "PRECISE" ){
 			sleep(3);
-			system("/etc/init.d/tgtd stop");
+			system("/usr/sbin/tgtd stop");
 			sleep(3);
-			system("/etc/init.d/tgtd start");
+			system("/usr/sbin/tgtd start");
 		};
 
 	};
