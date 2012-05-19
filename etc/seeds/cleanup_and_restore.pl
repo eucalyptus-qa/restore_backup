@@ -790,8 +790,8 @@ sub ubuntu_package_install{
 		system("apt-get --force-yes -y install " . $pkgname . "-cloud");
  		if( !is_before_dual_repo() ){
 			if( is_install_san_from_memo() || is_install_vmbroker_from_memo() ){
-#				system("apt-get --force-yes -y install eucalyptus-enterprise-libs");
-				system("apt-get --force-yes -y install libeucalyptus-enterprise-storage-san-java");
+				system("apt-get --force-yes -y install eucalyptus-enterprise-libs");
+#				system("apt-get --force-yes -y install libeucalyptus-enterprise-storage-san-java");
 			};
 		};
 	};
