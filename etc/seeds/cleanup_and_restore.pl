@@ -819,8 +819,8 @@ sub ubuntu_package_install{
 			print("killall -9 tgtd\n");
 			system("killall -9 tgtd");
 			sleep(3);
-			print("/usr/sbin/tgtd start\n");
-			system("/usr/sbin/tgtd start");
+			print("service tgt start\n");
+			system("service tgt start");
 		};
 
 	};
