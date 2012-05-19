@@ -813,9 +813,13 @@ sub ubuntu_package_install{
 			system("apt-get --force-yes -y install " . $pkgname . "-enterprise-storage-san");
 		};
 		if( $distro_ver eq "PRECISE" ){
-			sleep(3);
+			print("/usr/sbin/tgtd stop\n");
 			system("/usr/sbin/tgtd stop");
 			sleep(3);
+			print("killall -9 tgtd\n");
+			system("killall -9 tgtd");
+			sleep(3);
+			print("/usr/sbin/tgtd start\n");
 			system("/usr/sbin/tgtd start");
 		};
 
