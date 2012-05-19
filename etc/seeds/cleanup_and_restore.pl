@@ -818,6 +818,8 @@ sub ubuntu_package_install{
 			sleep(3);
 			print("killall -9 tgtd\n");
 			system("killall -9 tgtd");
+			print("service tgt stop\n");
+			system("service tgt stop");
 			sleep(3);
 			print("service tgt start\n");
 			system("service tgt start");
