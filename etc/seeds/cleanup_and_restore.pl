@@ -775,6 +775,7 @@ sub force_start_libvirt{
 
 sub ubuntu_package_install{
 
+	my $distro_ver = $ENV{'QA_DISTRO_VER'};
 	my $roll = $ENV{'QA_ROLL'};
 	my $bzr_dir = $ENV{'QA_BZR_DIR'};
 
@@ -810,11 +811,14 @@ sub ubuntu_package_install{
 		system("apt-get --force-yes -y install " . $pkgname . "-sc");
 		if( is_install_san_from_memo() ){
 			system("apt-get --force-yes -y install " . $pkgname . "-enterprise-storage-san");
+		};
+		if( $distro_ver eq "PRECISE" ){
 			sleep(3);
 			system("/etc/init.d/tgtd stop");
 			sleep(3);
 			system("/etc/init.d/tgtd start");
 		};
+
 	};
 
 	if( does_It_Have($roll, "WS") ){
