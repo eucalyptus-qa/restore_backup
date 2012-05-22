@@ -448,7 +448,9 @@ sub is_install_san_from_memo{
                 	$ENV{'QA_INSTALL_SAN'} = "YES";
                 	return 1;
 		};
-        }elsif( $ENV{'QA_MEMO'} =~ /^EBS_STORAGE_MANAGER=(\w+)/m ){
+        };
+	
+	if( $ENV{'QA_MEMO'} =~ /^EBS_STORAGE_MANAGER=(\w+)/m ){
 		my $ebs_option = $1;
 		print "\n";
                 print "FOUND in MEMO\n";
