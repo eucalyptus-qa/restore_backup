@@ -350,7 +350,8 @@ sub read_input_file{
 	my $memo = "";
 
 	my %vmware_group;
-
+	my $is_vmware_included = 0;
+	
 	open( INPUT, "< ./2b_tested.lst" ) || die $!;
 
 	my $line;
@@ -380,6 +381,7 @@ sub read_input_file{
 			if( $this_distro eq "vmware" ){
 				if( $this_roll =~ /NC(\d+)/ ){
 					$vmware_group{$1} = 1;
+					$is_vmware_included = 1;
 				};
 			};
 
@@ -413,9 +415,13 @@ sub read_input_file{
 
 	close(INPUT);
 
-	if( $ENV{'QA_ROLL'} =~ /CC(\d+)/){
-		if( $vmware_group{$1} == 1){
+	if( $is_vmware_included == 1 ){
+		if( $ENV{'QA_ROLL'} =~ /CLC/ || $ENV{'QA_ROLL'} =~ /WS/ || $ENV{'QA_ROLL'} =~ /SC/ ){
 			$memo .= "\nINSTALL_VMBROKER=YES\n";
+		}elsif( $ENV{'QA_ROLL'} =~ /CC(\d+)/){
+			if( $vmware_group{$1} == 1){
+				$memo .= "\nINSTALL_VMBROKER=YES\n";
+			};
 		};
 	};
 
