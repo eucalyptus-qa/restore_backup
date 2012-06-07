@@ -233,9 +233,11 @@ if( $ENV{'EUCALYPTUS'} ne "" ){
 	print "\ncp -Lr $ENV{'BACKUP_LOCATION'}/. /opt/eucalyptus/.\n";
 	system("cp -Lr $ENV{'BACKUP_LOCATION'}/. /opt/eucalyptus/.");
 
+	restart_iscsid();		###	ADDED 060612
+
 }else{
 	### SOURCE = PACKAGE or REPO
-	print "\n\nHandling REPO or PACKAGE SOURCE case\n";
+	print "\n\nHandling REPO case\n";
 
 	if( $ENV{'QA_DISTRO'} eq "CENTOS" || $ENV{'QA_DISTRO'} eq "RHEL" ){
 #		print "\nIn case of CENTOS or RHEL, adjusting python link\n";
@@ -269,6 +271,8 @@ print "\n#######################################################################
 print "\n########################################################################\n";
 
 	report_disk_status();
+
+	restart_iscsid();		###	ADDED 060612
 
 	print "\nINSTALL FROM PACKAGE\n\n";
 	install_from_package();
@@ -1630,6 +1634,35 @@ sub report_tgt_status{
 
         return 0;
 };
+
+
+sub restart_iscsid{
+
+        print "\n";
+        print "RESTART ISCSID\n";
+
+	if( $ENV{'QA_DISTRO'} eq "UBUNTU" || $ENV{'QA_DISTRO'} eq "DEBIAN" ){
+	        print("/etc/init.d/open-iscsi stop\n");
+	        system("/etc/init.d/open-iscsi stop\n");
+		sleep(1);
+
+	        print("/etc/init.d/open-iscsi start\n");
+	        system("/etc/init.d/open-iscsi start\n");
+	}else{
+	        print("/etc/init.d/iscsid stop\n");
+	        system("/etc/init.d/iscsid stop\n");
+		sleep(1);
+
+	        print("/etc/init.d/iscsid start\n");
+	        system("/etc/init.d/iscsid start\n");
+	};
+
+        print "\n";
+
+        return 0;
+};
+
+
 
 
 sub is_killall_dhcpd_when_restore_from_memo{
