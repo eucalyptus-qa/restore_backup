@@ -127,6 +127,12 @@ report_disk_status();
 
 ###	TRY CLEAN STOP ON TGTD FIRST	ADDED 010912
 print "\n";
+print("service tgtd stop\n");
+system("service tgtd stop");
+print "\n";
+sleep(3);
+
+print "\n";
 print("/etc/init.d/tgtd stop\n");
 system("/etc/init.d/tgtd stop");
 print "\n";
@@ -273,6 +279,8 @@ print "\n#######################################################################
 	report_disk_status();
 
 	restart_iscsid();		###	ADDED 060612
+
+	remove_tgt();
 
 	print "\nINSTALL FROM PACKAGE\n\n";
 	install_from_package();
@@ -1660,6 +1668,25 @@ sub restart_iscsid{
         print "\n";
 
         return 0;
+};
+
+
+sub remove_tgt{
+
+        print "\n";
+        print "REMOVE TGT\n";
+
+	if( $ENV{'QA_DISTRO'} eq "UBUNTU" || $ENV{'QA_DISTRO'} eq "DEBIAN" ){
+		print("apt-get --force-yes -y purge tgt\n");
+		system("apt-get --force-yes -y purge tgt");
+	}else{
+		print("yum -y erase scsi-target-utils\n");
+		system("yum -y erase scsi-target-utils");
+	};
+
+	print "\n";
+
+	return 0;
 };
 
 
