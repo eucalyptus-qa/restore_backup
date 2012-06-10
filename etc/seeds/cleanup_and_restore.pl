@@ -280,7 +280,7 @@ print "\n#######################################################################
 
 	restart_iscsid();		###	ADDED 060612
 
-	remove_tgt();
+#	remove_tgt();
 
 	print "\nINSTALL FROM PACKAGE\n\n";
 	install_from_package();
