@@ -829,7 +829,7 @@ sub ubuntu_package_install{
 	if( does_It_Have($roll, "CC") ){
 		system("apt-get --force-yes -y install " . $pkgname . "-cc");
 		if( is_install_vmbroker_from_memo() ){
-			if( $ENV{'QA_GIT_REPO'} ne "" ){
+			if( $ENV{'QA_GIT_REPO'} ne "" && !is_before_dual_repo() ){
                                 system("apt-get --force-yes -y install eucalyptus-enterprise-vmware-broker");
                         }else{
 				system("apt-get --force-yes -y install " . $pkgname . "-broker");
@@ -839,7 +839,7 @@ sub ubuntu_package_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("apt-get --force-yes -y install " . $pkgname . "-sc");
-		if( is_install_san_from_memo() ){
+		if( is_install_san_from_memo() && !is_before_dual_repo() ){
 			system("apt-get --force-yes -y install " . $pkgname . "-enterprise-storage-san");
 		};
 		if( $distro_ver eq "PRECISE" ){
@@ -902,7 +902,7 @@ sub debian_package_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("apt-get --force-yes -y install " . $pkgname . "-sc");
-		if( is_install_san_from_memo() ){
+		if( is_install_san_from_memo() && !is_before_dual_repo() ){
 			system("apt-get --force-yes -y install " . $pkgname . "-enterprise-storage-san");
 			sleep(3);
                         system("/etc/init.d/tgtd stop");
@@ -958,7 +958,7 @@ sub opensuse_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("zypper -n in " . $pkgname . "-sc");
-		if( is_install_san_from_memo() ){
+		if( is_install_san_from_memo() && !is_before_dual_repo() ){
                         system("zypper -n in " . $pkgname . "-enterprise-storage-san");
 			sleep(3);
                         system("/etc/init.d/tgtd stop");
@@ -1044,7 +1044,7 @@ sub centos_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("yum -y install " . $pkgname . "-sc.$this_arch --nogpgcheck");
-		if( is_install_san_from_memo() ){
+		if( is_install_san_from_memo() && !is_before_dual_repo() ){
 			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
 			sleep(3);
                         system("/etc/init.d/tgtd stop");
@@ -1129,7 +1129,7 @@ sub fedora_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("yum -y install " . $pkgname . "-sc --nogpgcheck");
-		if( is_install_san_from_memo() ){
+		if( is_install_san_from_memo() && !is_before_dual_repo() ){
 			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
 			sleep(3);
                         system("/etc/init.d/tgtd stop");
@@ -1217,7 +1217,7 @@ sub rhel_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("yum -y install " . $pkgname . "-sc.$this_arch --nogpgcheck");
-		if( is_install_san_from_memo() ){
+		if( is_install_san_from_memo() && !is_before_dual_repo() ){
 			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
 			sleep(3);
                         system("/etc/init.d/tgtd stop");
