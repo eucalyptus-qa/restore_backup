@@ -145,6 +145,9 @@ system("killall -9 tgtd");
 print "\n";
 sleep(1);
 
+###	ADDED
+kill_nine_tgt();
+
 print("ps aux | grep tgt\n");
 system("ps aux | grep tgt");
 print "\n";
@@ -1690,6 +1693,37 @@ sub remove_tgt{
 };
 
 
+sub kill_nine_tgt{
+
+	my $ps = `ps aux | grep tgt`;
+	my @ps_array = split("\n", $ps);
+
+	print "\n";
+	print "========================================================\n";
+	print "KILL NINE TGT\n";
+	print "========================================================\n";
+	print "\n";
+
+	foreach my $proc (@ps_array){
+		print "PS LINE:\n" .$proc . "\n";
+		if( $proc =~ /^\S+\s+(\d+)\s/ ){
+			my $procid = $1;
+			print "FOUND PID: " .$procid . "\n";
+			my $cmd = "kill -9 $procid\n";
+			system($cmd);
+			print "\n";
+		};	
+	};
+
+	print "========================================================\n";
+	print "END OF KILL NINE TGT\n";
+	print "========================================================\n";
+	print "\n";
+
+	return 0;
+};
+
+
 
 
 sub is_killall_dhcpd_when_restore_from_memo{
@@ -1722,6 +1756,7 @@ sub is_before_dual_repo{
 	};
 	return 0;
 };  
+
 
 
 
