@@ -127,14 +127,14 @@ report_disk_status();
 
 ###	TRY CLEAN STOP ON TGTD FIRST	ADDED 010912
 print "\n";
-print("service tgtd stop\n");
-system("service tgtd stop");
+print("service tgtd force-stop\n");
+system("service tgtd force-stop");
 print "\n";
 sleep(3);
 
 print "\n";
-print("/etc/init.d/tgtd stop\n");
-system("/etc/init.d/tgtd stop");
+print("/etc/init.d/tgtd force-stop\n");
+system("/etc/init.d/tgtd force-stop");
 print "\n";
 sleep(3);
 
