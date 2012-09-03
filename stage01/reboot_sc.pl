@@ -63,7 +63,7 @@ if( $source_lst[0] eq "PACKAGE" || $source_lst[0] eq "REPO" ){
 
 
 ### REBOOT STORAGE CONTROLLER
-print "\n\n----------------------- Rebooting Storage Controller Nodes -----------------------\n";
+print "\n\n----------------------- Rebooting Storage/Node Controller Nodes -----------------------\n";
 
 my $is_error = 0;
 my $is_rebooted = 0;
@@ -78,8 +78,8 @@ for( my $i = 0; $i <= @ip_lst; $i++){
 	$this_distro = lc($this_distro);
 	$this_version = lc($this_version);	
 
-	###	if distro is SC,
-	if( does_It_Have($this_roll, "SC") ){
+	###	if distro is SC or NC
+	if( does_It_Have($this_roll, "SC") || does_It_Have($this_roll, "NC") ){
 		reboot_machine($this_ip);
 		print "\n";
 		$is_rebooted = 1;

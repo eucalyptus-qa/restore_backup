@@ -78,7 +78,7 @@ for( my $i = 0; $i <= @ip_lst && $is_error == 0; $i++){
 	$this_distro = lc($this_distro);
 
 	###	if distro is SC,
-	if( does_It_Have($this_roll, "SC") ){
+	if( does_It_Have($this_roll, "SC") || does_It_Have($this_roll, "NC") ){
 		$is_error = signal_check_machine($this_ip);
 		print "\n";
 		$is_checked = 1;
