@@ -457,28 +457,27 @@ sub is_install_vmbroker_from_memo{
 	return 0;
 };
 
+
 sub is_install_san_from_memo{
 	$ENV{'QA_INSTALL_SAN'} = "NO";
         if( $ENV{'QA_MEMO'} =~ /^SAN_PROVIDER=(\w+)/m ){
 		my $san_option = $1;
-		print "\n";
                 print "FOUND in MEMO\n";
                 print "SAN_PROVIDER=$san_option\n";
-		print "\n";
 		if( !($san_option =~ /^NO/) ){
                 	$ENV{'QA_INSTALL_SAN'} = "YES";
+                	$ENV{'QA_MEMO_SAN_PROVIDER'} = $san_option;
                 	return 1;
 		};
         };
 	
 	if( $ENV{'QA_MEMO'} =~ /^EBS_STORAGE_MANAGER=(\w+)/m ){
 		my $ebs_option = $1;
-		print "\n";
                 print "FOUND in MEMO\n";
                 print "EBS_STORAGE_MANAGER=$ebs_option\n";
-		print "\n";
 		if( !($ebs_option =~ /^NO/) ){
                 	$ENV{'QA_INSTALL_SAN'} = "YES";
+                	$ENV{'QA_MEMO_EBS_STORAGE_MANAGER'} = $ebs_option;
                 	return 1;
 		};
         };
@@ -1047,12 +1046,32 @@ sub centos_package_euca_repo_install{
 
 	if( does_It_Have($roll, "SC") ){
 		system("yum -y install " . $pkgname . "-sc.$this_arch --nogpgcheck");
-		if( is_install_san_from_memo() && !is_before_dual_repo() ){
-			system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
-			sleep(3);
-                        system("/etc/init.d/tgtd stop");
-                        sleep(3);
-                        system("/etc/init.d/tgtd start");
+
+		if( is_install_san_from_memo() ){
+
+			if( is_before_dual_repo() ){
+				### VERSION 3.0 AND BEFORE
+				# DO NOTHING
+			}elsif( is_euca_version_three_one() ){
+				### VERSION 3.1
+				run_cmd("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
+				sleep(3);
+                        	run_cmd("/etc/init.d/tgtd stop");
+                        	sleep(3);
+                        	run_cmd("/etc/init.d/tgtd start");
+			}else{
+				### VERSION 3.2 AND AFTER
+				my $san_storage_package = "";
+				if( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EmcVnxProvider" ){
+					$san_storage_package = "eucalyptus-enterprise-storage-san-emc";
+				}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "NetappProvider" ){
+					$san_storage_package = "eucalyptus-enterprise-storage-san-netapp";
+				}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EquallogicProvider" ){
+					$san_storage_package = "eucalyptus-enterprise-storage-san-equallogic";
+				};
+				run_cmd("yum -y install " . $san_storage_package . " --nogpgcheck");
+				sleep(3);
+			};
 		};
 	};
 
@@ -1757,8 +1776,13 @@ sub is_before_dual_repo{
 	return 0;
 };  
 
-
-
-
+sub is_euca_version_three_one{
+	if( is_euca_version_from_memo() ){
+		if( $ENV{'QA_MEMO_EUCA_VERSION'} =~ /^3\.1/ ){
+			return 1;
+		};
+	};
+	return 0;
+};
 
 1;
