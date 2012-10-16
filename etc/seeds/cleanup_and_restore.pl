@@ -1054,11 +1054,11 @@ sub centos_package_euca_repo_install{
 				# DO NOTHING
 			}elsif( is_euca_version_three_one() ){
 				### VERSION 3.1
-				run_cmd("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
+				system("yum -y install " . $pkgname . "-enterprise-storage-san --nogpgcheck");
 				sleep(3);
-                        	run_cmd("/etc/init.d/tgtd stop");
+                        	system("/etc/init.d/tgtd stop");
                         	sleep(3);
-                        	run_cmd("/etc/init.d/tgtd start");
+                        	system("/etc/init.d/tgtd start");
 			}else{
 				### VERSION 3.2 AND AFTER
 				my $san_storage_package = "";
@@ -1069,7 +1069,7 @@ sub centos_package_euca_repo_install{
 				}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EquallogicProvider" ){
 					$san_storage_package = "eucalyptus-enterprise-storage-san-equallogic";
 				};
-				run_cmd("yum -y install " . $san_storage_package . " --nogpgcheck");
+				system("yum -y install " . $san_storage_package . " --nogpgcheck");
 				sleep(3);
 			};
 		};
