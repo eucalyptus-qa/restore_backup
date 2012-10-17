@@ -1054,7 +1054,7 @@ sub centos_package_euca_repo_install{
 					$san_storage_package = "eucalyptus-enterprise-storage-san-common-libs";
 				};
 				print "\n";
-				print ""yum -y install " . $san_storage_package . " --nogpgcheck\n";
+				print "yum -y install " . $san_storage_package . " --nogpgcheck\n";
 				print "\n";
 				system("yum -y install " . $san_storage_package . " --nogpgcheck");
 				sleep(3);
