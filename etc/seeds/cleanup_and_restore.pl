@@ -1034,6 +1034,33 @@ sub centos_package_euca_repo_install{
                 }else{
                         system("yum -y groupinstall eucalyptus-cloud-controller --nogpgcheck");
                 };
+
+		### 	ADDED FOR NEW 3.2 SAN PACKAGE REQUIREMENT		101612
+		if( is_install_san_from_memo() ){
+
+			if( is_before_dual_repo() ){
+				### DO NOTHING
+			}elsif( is_euca_version_three_one() ){
+				### DO NOTHING
+			}else{
+				### VERSION 3.2 AND AFTER
+				my $san_storage_package = "";
+				if( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EmcVnxProvider" ){
+					$san_storage_package = "eucalyptus-enterprise-storage-san-emc";
+				}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "NetappProvider" ){
+					$san_storage_package = "eucalyptus-enterprise-storage-san-netapp";
+				}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EquallogicProvider" ){
+#					$san_storage_package = "eucalyptus-enterprise-storage-san-equallogic";
+					$san_storage_package = "eucalyptus-enterprise-storage-san-common-libs";
+				};
+				print "\n";
+				print ""yum -y install " . $san_storage_package . " --nogpgcheck\n";
+				print "\n";
+				system("yum -y install " . $san_storage_package . " --nogpgcheck");
+				sleep(3);
+			};
+		};
+
 	};
 
 	if( does_It_Have($roll, "CC") ){
@@ -1060,17 +1087,19 @@ sub centos_package_euca_repo_install{
                         	sleep(3);
                         	system("/etc/init.d/tgtd start");
 			}else{
-				### VERSION 3.2 AND AFTER
-				my $san_storage_package = "";
-				if( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EmcVnxProvider" ){
-					$san_storage_package = "eucalyptus-enterprise-storage-san-emc";
-				}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "NetappProvider" ){
-					$san_storage_package = "eucalyptus-enterprise-storage-san-netapp";
-				}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EquallogicProvider" ){
-					$san_storage_package = "eucalyptus-enterprise-storage-san-equallogic";
+				if( does_It_Have($roll, "CLC") ){
+					### VERSION 3.2 AND AFTER
+					my $san_storage_package = "";
+					if( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EmcVnxProvider" ){
+						$san_storage_package = "eucalyptus-enterprise-storage-san-emc";
+					}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "NetappProvider" ){
+						$san_storage_package = "eucalyptus-enterprise-storage-san-netapp";
+					}elsif( $ENV{'QA_MEMO_SAN_PROVIDER'} eq "EquallogicProvider" ){
+						$san_storage_package = "eucalyptus-enterprise-storage-san-equallogic";
+					};
+					system("yum -y install " . $san_storage_package . " --nogpgcheck");
+					sleep(3);
 				};
-				system("yum -y install " . $san_storage_package . " --nogpgcheck");
-				sleep(3);
 			};
 		};
 	};
