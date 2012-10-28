@@ -1114,6 +1114,10 @@ sub centos_package_euca_repo_install{
 		system("yum -y install " . $pkgname . "-nc.$this_arch --nogpgcheck");
 	};							
 
+	if( does_It_Have($roll, "UI") ){
+		system("yum -y install eucalyptus-console --nogpgcheck");
+	};
+
 	return 0;
 };
 
@@ -1286,6 +1290,10 @@ sub rhel_package_euca_repo_install{
 
 		system("yum -y install " . $pkgname . "-nc.$this_arch --nogpgcheck");
 	};							
+
+	if( does_It_Have($roll, "UI") ){
+		system("yum -y install eucalyptus-console --nogpgcheck");
+	};
 
 	return 0;
 };
