@@ -1,3 +1,22 @@
+restore_backup
+==============
+
+## Description
+
+Uninstall existing Eucalyptus and reinstall Eucalyptus
+
+## Procedure
+
+1. Runs the /root/seeds/cleanup_and_restore.pl script for each component
+2. Stop all components
+3. Clean the instance dir
+4. Copy the backup instance dir /disk1/storage/eucalyptus/backup to $EUCA_INSTANCES
+5. Remove any temp files in /tmp/eucalyptus
+6. Remove anything from the $EUCALYTPUS directory
+7. Recreate /opt/eucalyptus directory
+8. Copy over all items from /backup/eucalyptus to /opt/eucalyptus
+
+
 # Eucalyptus Testunit Framework
 
 Eucalyptus Testunit Framework is designed to run a list of test scripts written by Eucalyptus developers.
